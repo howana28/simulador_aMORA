@@ -51,10 +51,3 @@ simulador_amora/
 └── README.md
 ```
 
-## Exemplo de entrada
-
-- Valor do imóvel: 500000
-- Percentual da entrada: 5
-- Duração do contrato (anos): 3
-- Taxa de juros anual: 8
-
