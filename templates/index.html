@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Simulador de Entrada de Imóvel aMORA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Simulador de Entrada de Imóvel aMORA</h1>
+        <form method="POST">
+            <label for="valor_imovel">Valor do imóvel (ex: 500000):</label>
+            <input type="text" id="valor_imovel" name="valor_imovel" required placeholder="500000" />
+
+            <label for="percentual_entrada">Percentual da entrada (%):</label>
+            <input type="text" id="percentual_entrada" name="percentual_entrada" required placeholder="5" />
+
+            <label for="anos_contrato">Duração do contrato (anos):</label>
+            <input type="number" id="anos_contrato" name="anos_contrato" required min="1" max="30" placeholder="3" />
+
+            <label for="taxa_juros">Taxa de juros anual (%):</label>
+            <input type="text" id="taxa_juros" name="taxa_juros" required placeholder="8" />
+
+            <button type="submit">Calcular</button>
+        </form>
+
+        {% if resultado %}
+            {% if resultado.erro %}
+                <p class="error">Erro: {{ resultado.erro }}</p>
+            {% else %}
+                <div class="resultado">
+                    <h2>=== RESULTADO ===</h2>
+                    <p>Valor do imóvel: {{ resultado.valor_imovel }}</p>
+                    <p>Entrada ({{ resultado.percentual_entrada }}%): {{ resultado.valor_entrada }}</p>
+                    <p>Valor a guardar (15% do imóvel): {{ resultado.total_a_guardar }}</p>
+                    <p>Valor mensal base: {{ resultado.valor_mensal_base }}</p>
+
+                    <h3>Valor mensal pelo IGPM ({{ resultado.igpm_percent }}% ao ano):</h3>
+                    <ul>
+                        {% for i in range(resultado.anos_contrato) %}
+                        <li>Ano {{ i+1 }}: {{ resultado.igpm_corrigido[i] }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Valor mensal com juros compostos ({{ resultado.taxa_juros_percent }}% ao ano):</h3>
+                    <ul>
+                        {% for i in range(resultado.anos_contrato) %}
+                        <li>Ano {{ i+1 }}: {{ resultado.juros_corrigido[i] }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
